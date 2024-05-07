@@ -12,10 +12,18 @@ return {
       { 
         "<leader>fe",
         function()
-          vim.notify("Comming from customs")
           require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
         end,
         desc = "Explorer NeoTree (Root Dir)",
+      },
+    },
+    opts = {
+      sources = { "filesystem" },
+      filesystem = {
+        hijack_netrw_behavior = "open_current"
+      },
+      window = {
+        position = "left"
       },
     },
     init = function()
