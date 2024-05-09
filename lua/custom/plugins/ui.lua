@@ -16,6 +16,7 @@ return {
         end,
         desc = "Explorer NeoTree (Root Dir)",
       },
+      -- {  "<leader>fe", "<leader>e", desc = "Explorer NeoTree (Root Dir)", remap = true },
     },
     opts = {
       sources = { "filesystem" },
@@ -25,6 +26,7 @@ return {
       window = {
         position = "left"
       },
+      use_libuv_file_watcher = true
     },
     init = function()
       if vim.fn.argc(-1) == 1 then
@@ -79,28 +81,38 @@ return {
     keys = {
       { "<leader>lg", "<Cmd>LazyGit<CR>", desc = "LazyGit" }
     }
+  },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+        "nvim-neotest/nvim-nio",
+        "nvim-lua/plenary.nvim",
+        "antoinemadec/FixCursorHold.nvim",
+        "nvim-treesitter/nvim-treesitter",
+        "nvim-neotest/neotest-jest"
+    },
+    keys = {
+      {
+        "<leader>tr",
+        function()
+          require("neotest").run.run()
+        end,
+        desc = "Neo test run",
+      },
+    },
+    config = function()
+      require('neotest').setup({
+        adapters = {
+          require('neotest-jest')({
+            jestCommand = "npm test --",
+            jestConfigFile = "jest.config.ts",
+            env = { CI = true },
+            cwd = function(path)
+              return vim.fn.getcwd()
+            end,
+          }),
+        }
+    })
+    end,
   }
-  -- {
-  -- dependencies = {
-  --     "nvim-neotest/nvim-nio",
-  --     "nvim-lua/plenary.nvim",
-  --     "antoinemadec/FixCursorHold.nvim",
-  --     "nvim-treesitter/nvim-treesitter",
-  --     "nvim-neotest/neotest-jest"
-  --   },
-  -- },
-  -- keys = {
-  --   {
-  --     "<leader>tr",
-  --     function()
-  --       require("neotest").run.run()
-  --     end,
-  --     desc = "Neo test run",
-  --   },
-  -- },
-  -- opts = function(_, opts) 
-  --   vim.list_extend(opts.adapters, {
-  --     require("nvim-neotest/neotest-jest")
-  --   })
-  -- end,
 }
