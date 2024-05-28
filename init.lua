@@ -619,7 +619,8 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'nixpkgs-fmt',
         'prettierd',
-        'eslint_d'
+        'eslint_d',
+        'markdownlint'
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
